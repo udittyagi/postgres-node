@@ -1,0 +1,33 @@
+version: '3'
+services:
+  postgres:
+    container_name: container-postgresdb
+    image: postgres
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: TEST_SM
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: <EMAIL>
+      PGADMIN_DEFAULT_PASSWORD: password
+    volumes:
+      - .:/var/lib/pgadmin/storage/udittyagi2_gmail.com/shared
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+
+    # https://stackoverflow.com/questions/76696044/pgadmin4-unable-to-access-shared-volume-in-docker-compose-setup
